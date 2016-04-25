@@ -13,122 +13,95 @@
 Run %A_AHKPath% "autohotkey\MuteOnLock.ahk"
 
 Pause::Suspend
-g_LastCtrlKeyDownTime := 0
-g_AbortSendEsc := false
-g_ControlRepeatDetected := false
 
-+CapsLock::return
 
-*CapsLock::
-    if (g_ControlRepeatDetected)
-    {
-        return
-    }
+#InstallKeybdHook
 
-    send,{Ctrl down}
-    g_LastCtrlKeyDownTime := A_TickCount
-    g_AbortSendEsc := false
-    g_ControlRepeatDetected := true
+SetCapsLockState, alwaysoff
 
-    return
+Capslock::
+Send {LControl Down}
+KeyWait, CapsLock
+Send {LControl Up}
+if ( A_PriorKey = "CapsLock" )
+{
+Send {Esc}
+}
+return
 
-*CapsLock Up::
-    send,{Ctrl up}
-    g_ControlRepeatDetected := false
-    if (g_AbortSendEsc)
-    {
-        return
-    }
-    current_time := A_TickCount
-    time_elapsed := current_time - g_LastCtrlKeyDownTime
-    if (time_elapsed <= 250)
-    {
-        SendInput {Esc}
-    }
-    return
 
-~*^a::
-    g_AbortSendEsc := true
-    return
-~*^b::
-    g_AbortSendEsc := true
-    return
-~*^c::
-    g_AbortSendEsc := true
-    return
-~*^d::
-    g_AbortSendEsc := true
-    return
-~*^e::
-    g_AbortSendEsc := true
-    return
-~*^f::
-    g_AbortSendEsc := true
-    return
-~*^g::
-    g_AbortSendEsc := true
-    return
-~*^h::
-    g_AbortSendEsc := true
-    return
-~*^i::
-    g_AbortSendEsc := true
-    return
-~*^j::
-    g_AbortSendEsc := true
-    return
-~*^k::
-    g_AbortSendEsc := true
-    return
-~*^l::
-    g_AbortSendEsc := true
-    return
-~*^m::
-    g_AbortSendEsc := true
-    return
-~*^n::
-    g_AbortSendEsc := true
-    return
-~*^o::
-    g_AbortSendEsc := true
-    return
-~*^p::
-    g_AbortSendEsc := true
-    return
-~*^q::
-    g_AbortSendEsc := true
-    return
-~*^r::
-    g_AbortSendEsc := true
-    return
-~*^s::
-    g_AbortSendEsc := true
-    return
-~*^t::
-    g_AbortSendEsc := true
-    return
-~*^u::
-    g_AbortSendEsc := true
-    return
-~*^v::
-    g_AbortSendEsc := true
-    return
-~*^w::
-    g_AbortSendEsc := true
-    return
-~*^x::
-    g_AbortSendEsc := true
-    return
-~*^y::
-    g_AbortSendEsc := true
-    return
-~*^z::
-    g_AbortSendEsc := true
-    return
+LShift::
+Send {LShift Down}
+KeyWait, LShift
+Send {LShift Up}
+if ( A_PriorKey = "LShift" )
+{
+Send (
+}
+if ( A_PriorKey = "RShift" )
+{
+Send ()
+}
+return
 
 #IfWinNotActive ahk_class Vim
 ^Backspace:: SEND ^+{Left}{Backspace}
 #IfWinNotActive
+
+RShift::
+Send {RShift Down}
+KeyWait, RShift
+Send {RShift Up}
+if ( A_PriorKey = "RShift" )
+{
+Send )
+}if ( A_PriorKey = "LShift" )
+{
+Send ()
+}
+return
+
+
+LCtrl::
+Send {LCtrl Down}
+KeyWait, LCtrl
+Send {LCtrl Up}
+if ( A_PriorKey = "LControl" )
+{
+Send {{}
+}
+if ( A_PriorKey = "RControl" )
+{
+Send {{}{}}
+}
+if (A_PriorKey = "LShift" )
+{
+  send <
+}
+return
+
+RCtrl::
+Send {RCtrl Down}
+KeyWait, RCtrl
+Send {RCtrl Up}
+if ( A_PriorKey = "RControl" )
+{
+Send {}}
+}if ( A_PriorKey = "LControl{}" )
+{
+Send {{}{}}
+}
+if (A_PriorKey = "RShift" )
+{
+  send >
+}
+return
+
+
+
+
+
+^Backspace:: SEND ^+{Left}{Backspace}
 
 ^+p:: Run, "C:\Users\wynnc\Desktop\Project Notes"
 
@@ -246,14 +219,14 @@ f10 & 1:: Run notepad++.exe
 
 MoveWindow(xpos, ypos, width, height, amount)
 {
-	toMove := amount ? 30 : 7
+toMove := amount ? 30 : 7
 
-	xpos *= toMove
-	ypos *= toMove
-	width *= toMove
-	height *= toMove
-	WinGetPos,X,Y,W,H,A
-	WinMove, A,, X+xpos, Y+ypos, W+width, H+height
+xpos *= toMove
+ypos *= toMove
+width *= toMove
+height *= toMove
+WinGetPos,X,Y,W,H,A
+WinMove, A,, X+xpos, Y+ypos, W+width, H+height
 
 }
 
@@ -288,7 +261,7 @@ return
   Loop, %mc% {
     SysGet, moncoords, MonitorWorkArea, %A_Index%
     if(moncoordsLeft <=monCen  and moncoordsRight > monCen ) { ;we're looking at the right mon
-  	WinMove,A,,moncoordsLeft,moncoordsTop + (moncoordsBottom-moncoordsTop)/2,moncoordsRight-moncoordsLeft, (moncoordsBottom-moncoordsTop)/2
+  WinMove,A,,moncoordsLeft,moncoordsTop + (moncoordsBottom-moncoordsTop)/2,moncoordsRight-moncoordsLeft, (moncoordsBottom-moncoordsTop)/2
     }
   }
 return
@@ -313,3 +286,6 @@ WPA_MoveMouseToMonitor(md)
     CoordMode, Mouse, Screen
     MouseMove, mdxc, mdyc, 0
 }
+
+
+
