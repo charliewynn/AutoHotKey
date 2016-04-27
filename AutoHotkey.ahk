@@ -10,7 +10,7 @@
 
 ;Run %A_AHKPath% "active_window_indicator.ahk"
 ;Run %A_AHKPath% "cursor_crosshair.ahk"
-Run %A_AHKPath% "autohotkey\MuteOnLock.ahk"
+Run %A_AHKPath% "MuteOnLock.ahk"
 
 Pause::Suspend
 
