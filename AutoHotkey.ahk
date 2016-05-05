@@ -98,11 +98,6 @@ if (A_PriorKey = "RShift" )
 return
 
 
-
-
-
-^Backspace:: SEND ^+{Left}{Backspace}
-
 ^+p:: Run, "C:\Users\wynnc\Desktop\Project Notes"
 
 SetTitleMatchMode, Regex
