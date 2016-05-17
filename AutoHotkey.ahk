@@ -97,6 +97,7 @@ if (A_PriorKey = "RShift" )
 }
 return
 
+^!a:: send "abcdefghijklmnopqrstuvwxyz"
 
 ^+p:: Run, "C:\Users\wynnc\Desktop\Project Notes"
 
