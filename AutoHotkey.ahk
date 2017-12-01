@@ -12,6 +12,8 @@
 ;Run %A_AHKPath% "cursor_crosshair.ahk"
 Run %A_AHKPath% "MuteOnLock.ahk"
 
+
+
 Pause::Suspend
 
 
@@ -38,6 +40,7 @@ if ( A_PriorKey = "LShift" )
 {
 Send (
 }
+
 if ( A_PriorKey = "RShift" )
 {
 Send ()
@@ -99,8 +102,6 @@ return
 
 ^!a:: send "abcdefghijklmnopqrstuvwxyz"
 
-^+p:: Run, "C:\Users\wynnc\Desktop\Project Notes"
-
 SetTitleMatchMode, Regex
 
 #IfWinActive ahk_class Chrome_WidgetWin_1
@@ -112,6 +113,7 @@ SetTitleMatchMode, Regex
 ^!r:: Reload
 
 ; f1:: send {RAlt up}{LAlt up}{Alt up}{RCtrl up}{LCtrl up}{Ctrl up}{LShift up}{RShift up}{Shift up}
+^f1::send {ctrl down}{f1}{ctrl up}
 f2::f2
 f3::f3
 f4::f4
@@ -185,13 +187,24 @@ f2 & 2::
   Clipboard = %oldClip%
 return
 
-f7 & 1:: Run calc.exe
+f7 & 1::
+	Run calc.exe
+	WinWait, Calculator, , 3
+	if ErrorLevel
+	{
+		MsgBox, WinWait for Calculator Timed Out.
+		return
+	}
+	WinActivate
+return
+
 f10 & 1:: Run notepad++.exe
 
 !1::WPA_MoveMouseToMonitor(4)
 !2::WPA_MoveMouseToMonitor(1)
 !3::WPA_MoveMouseToMonitor(2)
 !4::WPA_MoveMouseToMonitor(3)
+
 
 ^Numpad2:: MoveWindow( 0,  1, 0, 0, 1)
 ^Numpad4:: MoveWindow(-1,  0, 0, 0, 1)
@@ -225,6 +238,8 @@ WinGetPos,X,Y,W,H,A
 WinMove, A,, X+xpos, Y+ypos, W+width, H+height
 
 }
+
+^!e:: send eval(fs.readFileSync(''){+}''){left}{left}{left}{left}{left}{left}
 
 ^!Right:: send #{Right}
 ^!Left:: send #{Left}
