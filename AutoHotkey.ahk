@@ -42,6 +42,10 @@ f24 & n::Send {}}
 f24 & u::Send {CtrlDown}Z{CtrlUp}
 f24 & i::Send {Home}
 f24 & a::Send {End}
+f24 & 1::Send #1
+f24 & 2::Send #2
+f24 & 3::Send #3
+f24 & 4::Send #4
 
 Capslock::
 Send {LControl Down}
