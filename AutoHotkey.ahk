@@ -21,6 +21,28 @@ Pause::Suspend
 
 SetCapsLockState, alwaysoff
 
+;f24 is the fs edge left space
+;if I just tap it I want to send a space
+f24::
+Send {f24 Down}
+KeyWait, f24
+Send {f24 Up}
+if( A_PriorHotkey = "F24")
+{
+  Send {Enter}
+}
+return 
+f24 & h::Send {left}
+f24 & l::Send {right}
+f24 & j::Send {down}
+f24 & k::Send {up}
+f24 & d::Send {Backspace}
+f24 & t::Send {{}
+f24 & n::Send {}}
+f24 & u::Send {CtrlDown}Z{CtrlUp}
+f24 & i::Send {Home}
+f24 & a::Send {End}
+
 Capslock::
 Send {LControl Down}
 KeyWait, CapsLock
@@ -48,7 +70,7 @@ Send ()
 return
 
 #IfWinNotActive ahk_class Vim
-^Backspace:: SEND ^+{Left}{Backspace}
+;^Backspace:: SEND ^+{Left}{Backspace}
 #IfWinNotActive
 
 RShift::
