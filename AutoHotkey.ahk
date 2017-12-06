@@ -46,6 +46,9 @@ f24 & 1::Send #1
 f24 & 2::Send #2
 f24 & 3::Send #3
 f24 & 4::Send #4
+f24 & Tab::AltTab
+f24 & CapsLock::ShiftAltTab
+f24 & p::Send +^p
 
 Capslock::
 Send {LControl Down}
@@ -57,6 +60,10 @@ Send {Esc}
 }
 return
 
+;disable capslock problem I was having
+;where hitting shift + capslock would turn on/off caps lock
++CapsLock::
+return
 
 LShift::
 Send {LShift Down}
