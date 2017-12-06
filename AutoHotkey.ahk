@@ -21,25 +21,126 @@ Pause::Suspend
 
 SetCapsLockState, alwaysoff
 
+DrawCircle(show)
+{ 
+  coordmode, mouse, screen
+  Gui, Destroy
+
+Gui, 1: +E0x20 -Caption +LastFound +Toolwindow +E0x8000000 +AlwaysOnTop ;WS_EX_NOACTIVATE
+
+	Gui, Color, Red
+	Gui, +LastFound
+	GuiHwnd := WinExist()
+	DetectHiddenWindows, On
+	WinSet, Transparent, 100, ahk_id %GuiHwnd%
+	WinSet, Region, 0-0 W100 H100 E, ahk_id %GuiHwnd%  ; An ellipse instead of a rectangle.
+	MouseGetPos, MouseX, MouseY
+	posX := MouseX - 50
+	posY := MouseY - 50
+  if show
+    Gui, Show, w500 h500 x%posX% y%posY%
+}
 ;f24 is the fs edge left space
 ;if I just tap it I want to send a space
+MouseMoving := false
 f24::
-Send {f24 Down}
-KeyWait, f24
-Send {f24 Up}
-if( A_PriorHotkey = "F24")
-{
-  Send {Enter}
-}
+  MouseMoving := MouseMoving ? false : true
+  if MouseMoving {
+    DrawCircle(true)
+    ShiftPressed := getkeystate("Shift", "p")
+    CtrlPressed := getkeystate("Ctrl", "p")
+    MoveBase = 55
+    ShiftMultiplier := 1
+    if ShiftPressed
+      MoveBase = 175
+    if CtrlPressed
+      MoveBase = 15
+  }
+  else {
+    DrawCircle(false)
+  }
 return 
-f24 & h::Send {left}
-f24 & l::Send {right}
+
+#if MouseMoving
+Space::
+  ;DrawCircle(false)
+  Click
+  ;MouseMoving := false
+return
++Space::
+  ;DrawCircle(false)
+  Click, right
+  ;MouseMoving := false
+return
+
++c::
++h::
++t::
++n::
+c::
+h::
+t::
+n::
+f24 & c::
+f24 & h::
+f24 & t::
+f24 & n::
+SetKeyDelay, 0
+loop 
+{
+  ShiftPressed := getkeystate("Shift", "p")
+  fn24Pressed := getkeystate("f24", "p")
+  RightSideMoveBase := 150
+  MoveBase = 15
+  if ShiftPressed{
+    RightSideMoveBase = 55
+  }
+  if fn24Pressed {
+    RightSideMoveBase := 13
+  }
+  if ShiftPressed & fn24Pressed {
+    RightSideMoveBase := 2
+  }
+	if getkeystate(".", "p"){
+		DllCall("mouse_event", uint, 1, int, 0, int, -1*MoveBase, uint, 0, int, 0)
+  }
+	if getkeystate("o", "p"){
+		DllCall("mouse_event", uint, 1, int, -1*MoveBase, int, 0, uint, 0, int, 0)
+  }
+	if getkeystate("e", "p"){
+		DllCall("mouse_event", uint, 1, int, 0, int, 1*MoveBase, uint, 0, int, 0)
+  }
+	if getkeystate("u", "p"){
+		DllCall("mouse_event", uint, 1, int, 1*MoveBase, int, 0, uint, 0, int, 0)
+  }
+
+	if getkeystate("c", "p"){
+		DllCall("mouse_event", uint, 1, int, 0, int, -1*RightSideMoveBase, uint, 0, int, 0)
+  }
+	if getkeystate("h", "p"){
+		DllCall("mouse_event", uint, 1, int, -1*RightSideMoveBase, int, 0, uint, 0, int, 0)
+  }
+	if getkeystate("t", "p"){
+		DllCall("mouse_event", uint, 1, int, 0, int, 1*RightSideMoveBase, uint, 0, int, 0)
+  }
+	if getkeystate("n", "p"){
+		DllCall("mouse_event", uint, 1, int, 1*RightSideMoveBase, int, 0, uint, 0, int, 0)
+  }
+
+  DrawCircle(true)
+
+	sleep 15	; increase/decrease this to adjust the repeat rate
+} until !(getkeystate(".") || getkeystate("o") || getkeystate("e") || getkeystate("u"))
+return 
+#if
+
+
 f24 & j::Send {down}
 f24 & k::Send {up}
 f24 & d::Send {Backspace}
 f24 & t::Send {{}
 f24 & n::Send {}}
-f24 & u::Send {CtrlDown}Z{CtrlUp}
+;f24 & u::Send {CtrlDown}Z{CtrlUp}
 f24 & i::Send {Home}
 f24 & a::Send {End}
 f24 & 1::Send #1
