@@ -62,16 +62,13 @@ f24::
 return 
 
 #if MouseMoving
-Space::
-  ;DrawCircle(false)
-  Click
-  ;MouseMoving := false
+CapsLock::
+Esc::
+  MouseMoving := false
+  DrawCircle(false)
 return
-+Space::
-  ;DrawCircle(false)
-  Click, right
-  ;MouseMoving := false
-return
+Space:: Click
++Space:: Click, right
 
 +c::
 +h::
@@ -100,18 +97,6 @@ loop
   }
   if ShiftPressed & fn24Pressed {
     RightSideMoveBase := 2
-  }
-	if getkeystate(".", "p"){
-		DllCall("mouse_event", uint, 1, int, 0, int, -1*MoveBase, uint, 0, int, 0)
-  }
-	if getkeystate("o", "p"){
-		DllCall("mouse_event", uint, 1, int, -1*MoveBase, int, 0, uint, 0, int, 0)
-  }
-	if getkeystate("e", "p"){
-		DllCall("mouse_event", uint, 1, int, 0, int, 1*MoveBase, uint, 0, int, 0)
-  }
-	if getkeystate("u", "p"){
-		DllCall("mouse_event", uint, 1, int, 1*MoveBase, int, 0, uint, 0, int, 0)
   }
 
 	if getkeystate("c", "p"){
