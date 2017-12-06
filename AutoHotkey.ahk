@@ -119,7 +119,8 @@ loop
 return 
 #if
 
-
+f24 & l::Send {right}
+f24 & h::Send {left}
 f24 & j::Send {down}
 f24 & k::Send {up}
 f24 & d::Send {Backspace}
